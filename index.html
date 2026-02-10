@@ -3,56 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Custom Background Wheel</title>
+    <title>Fixed Elements with Custom Background</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@200;300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* พื้นหลังปรับเปลี่ยนได้จาก JS */
+        /* พื้นหลังปรับเปลี่ยนได้ แต่ส่วนอื่นจะล็อคสีไว้ */
         body { 
             margin: 0; 
             background: #121212; 
             color: white; 
             font-family: 'Kanit', sans-serif; 
             overflow: hidden; 
-            transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1); 
+            transition: background 0.5s ease; 
         }
         
         .container { display: flex; flex-direction: column; height: 100vh; align-items: center; justify-content: center; position: relative; }
         
-        /* ปุ่มใส่ชื่อ */
+        /* ล็อคสีปุ่มใส่ชื่อ (สีเทา/ดำโปร่งแสงเหมือนเดิม) */
         #settings-text-btn { 
             position: absolute; top: 25px; right: 25px; font-size: 14px; 
-            cursor: pointer; color: rgba(255,255,255,0.5); transition: 0.3s; z-index: 10;
-            border: 1px solid rgba(255,255,255,0.2); padding: 8px 20px; border-radius: 50px;
-            background: rgba(0,0,0,0.1);
+            cursor: pointer; color: #888 !important; transition: 0.3s; z-index: 10;
+            border: 1px solid rgba(255,255,255,0.1); padding: 8px 20px; border-radius: 50px;
+            background: rgba(0,0,0,0.3);
         }
-        #settings-text-btn:hover { color: #fff; border-color: #fff; background: rgba(255,255,255,0.2); }
+        #settings-text-btn:hover { color: #fff !important; border-color: #fff; background: rgba(0,0,0,0.5); }
 
         .credit { position: absolute; bottom: 20px; right: 25px; font-size: 13px; color: rgba(255,255,255,0.3); font-weight: 200; z-index: 10; }
-        .credit a { color: rgba(255,255,255,0.4); text-decoration: none; transition: 0.3s; }
-        .credit a:hover { color: #2ecc71; }
+        .credit a { color: rgba(255,255,255,0.5); text-decoration: none; }
 
         #wheel-wrapper { position: relative; }
         #arrow { position: absolute; right: -12px; top: 50%; transform: translateY(-50%); width: 0; height: 0; border-top: 20px solid transparent; border-bottom: 20px solid transparent; border-right: 45px solid #ff4757; z-index: 5; }
-        canvas { border-radius: 50%; border: 12px solid rgba(0,0,0,0.1); box-shadow: 0 0 100px rgba(0,0,0,0.4); max-width: 90vw; max-height: 90vw; }
+        canvas { border-radius: 50%; border: 12px solid rgba(0,0,0,0.2); box-shadow: 0 0 80px rgba(0,0,0,0.4); max-width: 90vw; max-height: 90vw; }
 
-        #spin-btn { margin-top: 50px; padding: 12px 60px; font-size: 18px; cursor: pointer; background: transparent; color: inherit; border: 1px solid rgba(255,255,255,0.3); border-radius: 50px; transition: 0.4s; letter-spacing: 2px; }
-        #spin-btn:hover { background: rgba(255,255,255,1); color: #000; transform: scale(1.05); }
+        /* ล็อคสีปุ่ม SPIN (โปร่งแสง/ขาวดำ เหมือนเดิม) */
+        #spin-btn { 
+            margin-top: 50px; padding: 12px 60px; font-size: 18px; cursor: pointer; 
+            background: rgba(0,0,0,0.2); color: #fff; border: 1px solid rgba(255,255,255,0.2); 
+            border-radius: 50px; transition: 0.4s; letter-spacing: 2px;
+        }
+        #spin-btn:hover { background: #fff; color: #000; transform: scale(1.05); }
 
-        /* Modal Settings */
+        /* Modal Styles */
         .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; backdrop-filter: blur(8px); }
         .modal-content { background: #1a1a1a; padding: 30px; width: 95%; max-width: 550px; border-radius: 30px; border: 1px solid #333; max-height: 85vh; overflow-y: auto; }
         
-        .bg-config { display: flex; align-items: center; justify-content: space-between; background: #222; padding: 15px 20px; border-radius: 15px; margin-bottom: 25px; }
-        .bg-config label { font-weight: 300; color: #aaa; }
-        #bgColorPicker { width: 45px; height: 45px; border: none; background: none; cursor: pointer; }
-
+        .config-box { background: #222; padding: 15px; border-radius: 15px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; border: 1px solid #333; }
+        
         textarea { width: 100%; height: 120px; background: #000; color: #fff; border: 1px solid #333; padding: 15px; border-radius: 15px; margin-bottom: 20px; font-family: 'Kanit'; font-size: 16px; outline: none; }
         
-        .name-row { display: grid; grid-template-columns: 1fr 1.5fr 40px; align-items: center; margin-bottom: 10px; background: #282828; padding: 10px 15px; border-radius: 12px; gap: 15px; }
+        .name-row { display: grid; grid-template-columns: 1fr 1.5fr 40px; align-items: center; margin-bottom: 8px; background: #282828; padding: 10px 15px; border-radius: 12px; gap: 15px; }
         .weight-slider { accent-color: #ff4757; cursor: pointer; }
         
-        .btn-save { width: 100%; background: #ff4757; color: white; margin-top: 20px; padding: 15px; font-weight: bold; border-radius: 15px; border: none; cursor: pointer; font-size: 16px; }
+        .btn-save { width: 100%; background: #ff4757; color: white; margin-top: 15px; padding: 15px; font-weight: bold; border-radius: 15px; border: none; cursor: pointer; font-size: 16px; }
     </style>
 </head>
 <body id="main-body">
@@ -68,25 +70,24 @@
         <button id="spin-btn">SPIN WHEEL</button>
         
         <div class="credit">
-            ติดต่อสอบถามนาจา by <a href="https://www.instagram.com/gfour_.wj/" target="_blank">@gfour_.wj</a>
+            Developed by <a href="https://www.instagram.com/gfour_.wj/" target="_blank">@gfour_.wj</a>
         </div>
     </div>
 
     <div id="settingsModal" class="modal">
         <div class="modal-content">
-            <h2 style="font-weight: 300; margin-top:0;">ตั้งค่าเว็บไซต์</h2>
+            <h2 style="font-weight: 300; margin-top:0; color: #fff;">ตั้งค่า</h2>
             
-            <div class="bg-config">
-                <label>สีพื้นหลังเว็บไซต์:</label>
+            <div class="config-box">
+                <span style="color: #aaa;">เปลี่ยนสีพื้นหลังเว็บไซต์:</span>
                 <input type="color" id="bgColorPicker" value="#121212" oninput="document.getElementById('main-body').style.background = this.value">
             </div>
 
-            <textarea id="rawNames" placeholder="ใส่รายชื่อที่นี่ (หนึ่งชื่อต่อหนึ่งบรรทัด)...">กอล์ฟ&#10;ก้อง&#10;เมย์&#10;บอย</textarea>
+            <textarea id="rawNames" placeholder="ใส่ชื่อที่นี่...">กอล์ฟ&#10;ก้อง&#10;เมย์&#10;บอย</textarea>
             
-            <div style="font-size: 12px; color: #555; margin-bottom: 10px; padding-left: 10px;">ปรับโอกาสชนะของแต่ละคน:</div>
             <div id="slidersContainer"></div>
             
-            <button class="btn-save" onclick="document.getElementById('settingsModal').style.display='none'">บันทึกการตั้งค่า</button>
+            <button class="btn-save" onclick="document.getElementById('settingsModal').style.display='none'">บันทึก</button>
         </div>
     </div>
 
@@ -96,7 +97,7 @@
             <div style="padding: 40px 20px; font-size: 45px; font-weight: 200; color: #fff;" id="winnerDisplayName"></div>
             <div style="padding: 20px; display: flex; gap: 10px;">
                 <button class="btn-save" style="margin:0; background:#333;" onclick="document.getElementById('winnerModal').style.display='none'">ปิด</button>
-                <button class="btn-save" style="margin:0; flex:1;" id="removeWinnerBtn">ลบรายชื่อออก</button>
+                <button class="btn-save" style="margin:0; flex:1;" id="removeWinnerBtn">ลบชื่อออก</button>
             </div>
         </div>
     </div>
@@ -111,17 +112,14 @@
         let startAngle = 0;
         let isSpinning = false;
 
-        // สีของวงล้อแบบคลาสสิก (ไม่ต้องเปลี่ยนตามพื้นหลัง)
+        // ล็อคสีวงล้อ (Wheel Colors) ไม่ให้เปลี่ยนตามพื้นหลัง
         const wheelColors = ["#1e272e", "#2f3640", "#353b48", "#273c75", "#192a56", "#2c3e50"];
 
         function refreshUI() {
             const names = rawNames.value.split('\n').filter(n => n.trim() !== "");
             participants = names.map((name, i) => {
                 const found = participants.find(p => p.name === name.trim());
-                return { 
-                    name: name.trim(), 
-                    weight: found ? found.weight : 50 
-                };
+                return { name: name.trim(), weight: found ? found.weight : 50 };
             });
 
             slidersContainer.innerHTML = "";
@@ -129,7 +127,7 @@
                 const row = document.createElement('div');
                 row.className = 'name-row';
                 row.innerHTML = `
-                    <span style="font-size:14px;">${p.name}</span>
+                    <span style="font-size:14px; color:#eee;">${p.name}</span>
                     <input type="range" class="weight-slider" min="1" max="100" value="${p.weight}" oninput="updateWeight(${i}, this.value)">
                     <span style="font-size:12px; color:#ff4757; font-weight:bold;">${p.weight}</span>
                 `;
