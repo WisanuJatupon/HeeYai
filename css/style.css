@@ -1,0 +1,128 @@
+/* พื้นฐานของเว็บ */
+body {
+    background-color: #121212;
+    color: #e0e0e0;
+    font-family: 'Tahoma', sans-serif;
+    margin: 0; padding: 0;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #1f1f1f;
+    padding: 1rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky; top: 0; z-index: 1000;
+}
+.navbar .logo { font-size: 1.5rem; font-weight: bold; color: #ff4757; }
+.navbar .menu a { color: white; text-decoration: none; margin: 0 15px; }
+.navbar input { padding: 8px 15px; border-radius: 20px; border: none; background: #333; color: white; }
+
+/* Container */
+.container { max-width: 1250px; margin: auto; padding: 20px; }
+.section-title { border-left: 5px solid #ff4757; padding-left: 15px; margin: 20px 0; font-size: 1.2rem; }
+
+/* -------------------------------------------------------------------
+   Layout สำหรับหน้า Video (แบ่งซ้าย-ขวา แบบ Bilibili) 
+   ------------------------------------------------------------------- */
+.video-page-layout {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap; /* รองรับมือถือให้ Sidebar ลงไปอยู่ข้างล่างอัตโนมัติ */
+    align-items: flex-start;
+}
+
+/* ฝั่งซ้าย: เครื่องเล่นวิดีโอ */
+.video-main {
+    flex: 3; /* พื้นที่ส่วนใหญ่เป็นของวิดีโอ */
+    min-width: 320px;
+}
+
+.video-wrapper { 
+    width: 100%; 
+    background: #000; 
+    border-radius: 10px; 
+    overflow: hidden; 
+    box-shadow: 0 0 20px rgba(0,0,0,0.8); 
+}
+
+.video-player { width: 100%; display: block; border: none; }
+
+.video-details { margin-top: 15px; }
+.video-details h2 { margin: 10px 0; font-size: 1.5rem; }
+
+/* ฝั่งขวา: Sidebar รายการตอน */
+.video-sidebar {
+    flex: 1.2; /* ปรับขนาดให้ Sidebar กว้างขึ้นเล็กน้อยเพื่อความสวยงาม */
+    min-width: 320px;
+    background: #1f1f1f;
+    padding: 15px;
+    border-radius: 10px;
+    height: fit-content;
+}
+
+.playlist { display: flex; flex-direction: column; gap: 12px; }
+
+.playlist-item {
+    display: flex;
+    gap: 12px;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    background: #2a2a2a;
+    border: 1px solid transparent;
+}
+
+.playlist-item:hover { background: #3a3a3a; border-color: #444; }
+
+.playlist-item.active {
+    background: #333;
+    border-left: 5px solid #ff4757;
+}
+
+.playlist-item img {
+    width: 140px; /* ขนาดรูปพรีวิวตอนด้านขวา */
+    height: 80px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.item-info { display: flex; flex-direction: column; justify-content: center; }
+.item-info p { margin: 0 0 5px 0; font-size: 0.9rem; font-weight: bold; color: #fff; line-height: 1.2; }
+.item-info span { font-size: 0.75rem; color: #aaa; }
+
+/* -------------------------------------------------------------------
+   ส่วนประกอบอื่นๆ (หน้าแรก, Info, และ Reader)
+   ------------------------------------------------------------------- */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+}
+
+.card { background: #1f1f1f; border-radius: 10px; overflow: hidden; cursor: pointer; transition: 0.3s; border: 1px solid transparent; }
+.card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(255,71,87,0.4); border-color: #ff4757; }
+.card img { width: 100%; height: 260px; object-fit: cover; }
+.card-info { padding: 12px; font-size: 0.9rem; }
+
+.info-header { display: flex; gap: 30px; margin-bottom: 30px; background: #1f1f1f; padding: 25px; border-radius: 15px; border: 1px solid #333; }
+.info-cover { width: 280px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); }
+
+.chapter-list button {
+    display: block; width: 100%; padding: 16px; margin: 10px 0;
+    background: #2a2a2a; border: 1px solid #3a3a3a; color: white; text-align: left;
+    cursor: pointer; border-radius: 10px; transition: 0.3s;
+}
+.chapter-list button:hover { background: #3a3a3a; padding-left: 25px; border-color: #ff4757; }
+
+.back-btn { background: #333; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 6px; margin-bottom: 20px; transition: 0.2s; font-weight: bold; }
+.back-btn:hover { background: #ff4757; }
+
+.show-more-btn { display: block; margin: 40px auto; padding: 12px 50px; background: #ff4757; color: white; border: none; border-radius: 30px; cursor: pointer; font-weight: bold; font-size: 1rem; transition: 0.3s; }
+.show-more-btn:hover { transform: scale(1.1); box-shadow: 0 0 20px rgba(255,71,87,0.5); }
+
+/* หน้า Reader (เรียงรูปแนวตั้งสนิท) */
+.manga-content { display: flex; flex-direction: column; align-items: center; background: #000; width: 100%; padding-top: 10px; }
+.manga-content img { width: 100%; max-width: 850px; display: block; height: auto; margin: 0; padding: 0; border: none; }
