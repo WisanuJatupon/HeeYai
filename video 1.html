@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>NekoStream - Watch</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">NEKOPOST CLONE</div>
+    </nav>
+
+    <div class="container video-page-layout"> 
+        
+        <div class="video-main">
+            <button onclick="location.href='page 1.html'" class="back-btn">← ย้อนกลับ</button>
+            <div class="video-wrapper">
+                 <video controls class="video-player">
+                    <source src="assets/videos/test.mp4" type="video/mp4">
+                 </video>
+            </div>
+            <h2>วิดีโอเรื่อง A - ตอนที่ 1</h2>
+        </div>
+
+        <div class="video-sidebar">
+            <h3 class="section-title">รายการตอน / วิดีโอแนะนำ</h3>
+            <div class="playlist">
+                <div class="playlist-item active" onclick="location.href='video 1.html'">
+                    <img src="assets/images/monkey 2 (2).jpg">
+                    <div class="item-info">
+                        <p>ตอนที่ 1 (กำลังเล่น)</p>
+                        <span>1.2M Views</span>
+                    </div>
+                </div>
+                <div class="playlist-item" onclick="location.href='video 2.html'">
+                    <img src="assets/images/monkey 2 (2).jpg">
+                    <div class="item-info">
+                        <p>ตอนที่ 2</p>
+                        <span>500K Views</span>
+                    </div>
+                </div>
+                <div class="playlist-item" onclick="location.href='video 3.html'">
+                    <img src="assets/images/monkey 2 (2).jpg">
+                    <div class="item-info">
+                        <p>ตอนที่ 3</p>
+                        <span>300K Views</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+
+    <script src="js/script.js"></script>
+</body>
+</html>
